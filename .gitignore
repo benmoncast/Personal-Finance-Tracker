@@ -1,19 +1,24 @@
-# Environment variables and secrets
+# IDE and OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Secrets
 .env
-.env.*
-!.env.example
 backend/.env
 frontend/.env
 
-# Build output
+# Java
 backend/target/
-frontend/dist/
-frontend/node_modules/
-
-# Logs
 *.log
 
-# IDE and OS files
-.idea/
-.vscode/
-.DS_Store
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.npm-cache/
+
+# Uploaded/runtime files
+backend/src/main/resources/static/uploads/*
+!backend/src/main/resources/static/uploads/.gitkeep

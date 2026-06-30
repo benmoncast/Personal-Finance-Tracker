@@ -1,26 +1,33 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Navbar from './components/Navbar.jsx'
-import UserEdit from './pages/UserEdit.jsx'
-import UserForm from './pages/UserForm.jsx'
-import UserList from './pages/UserList.jsx'
-import UserSearch from './pages/UserSearch.jsx'
-import UserView from './pages/UserView.jsx'
+import { useAuth } from './context/AuthContext'
+import Layout from './components/Layout'
+import { LoadingScreen } from './components/UI'
+import AuthPage from './pages/AuthPage'
+import DashboardPage from './pages/DashboardPage'
+import { AccountsPage, BudgetsPage, ExpensesPage, GoalsPage, IncomePage, SubscriptionsPage } from './pages/FinancePages'
+import ReportsPage from './pages/ReportsPage'
+import SettingsPage from './pages/SettingsPage'
+import AdminPage from './pages/AdminPage'
 
 export default function App() {
+  const { user, loading } = useAuth()
+  if (loading) return <LoadingScreen />
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-950">
-      <Navbar />
-      <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <Routes>
-          <Route path="/" element={<Navigate to="/users" replace />} />
-          <Route path="/users" element={<UserList />} />
-          <Route path="/users/new" element={<UserForm />} />
-          <Route path="/users/:id" element={<UserView />} />
-          <Route path="/users/:id/edit" element={<UserEdit />} />
-          <Route path="/search" element={<UserSearch />} />
-          <Route path="*" element={<Navigate to="/users" replace />} />
-        </Routes>
-      </main>
-    </div>
+    <Routes>
+      <Route path="/login" element={<AuthPage />} />
+      <Route element={user ? <Layout /> : <Navigate to="/login" replace />}>
+        <Route index element={<DashboardPage />} />
+        <Route path="income" element={<IncomePage />} />
+        <Route path="expenses" element={<ExpensesPage />} />
+        <Route path="budgets" element={<BudgetsPage />} />
+        <Route path="accounts" element={<AccountsPage />} />
+        <Route path="subscriptions" element={<SubscriptionsPage />} />
+        <Route path="goals" element={<GoalsPage />} />
+        <Route path="reports" element={<ReportsPage />} />
+        <Route path="settings" element={<SettingsPage />} />
+        <Route path="admin" element={<AdminPage />} />
+      </Route>
+      <Route path="*" element={<Navigate to={user ? '/' : '/login'} replace />} />
+    </Routes>
   )
 }
