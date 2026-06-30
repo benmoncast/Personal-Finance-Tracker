@@ -26,12 +26,15 @@ A full-stack personal finance SaaS for tracking income, expenses, category budge
    npm run dev
    ```
 
-Open `http://localhost:5173`. With `APP_SEED_ENABLED=true`, the API creates sample categories and a demo workspace:
+Open `http://localhost:5173` and register a user. New users receive default income and expense categories; no demo users or credentials are created at startup.
 
-- Email: `demo@fintrack.app`
-- Password: `Demo1234!`
+To provision the first administrator, register the intended owner normally and promote that account directly in MySQL:
 
-The seeded administrator workspace uses `admin@fintrack.app` / `Admin1234!`. Change both demo passwords outside local development.
+```sql
+UPDATE users SET role = 'ADMIN' WHERE email = 'owner@example.com';
+```
+
+Keep database access restricted and never commit administrator passwords or production environment values.
 
 Hibernate can create/update the schema during development. The production-ready reference DDL is in [`backend/database/schema.sql`](backend/database/schema.sql).
 

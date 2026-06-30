@@ -7,7 +7,7 @@ import { errorMessage } from '../lib/api'
 export default function AuthPage() {
   const { user, login, register } = useAuth()
   const [mode, setMode] = useState('login'); const [show, setShow] = useState(false); const [busy, setBusy] = useState(false); const [error, setError] = useState('')
-  const [form, setForm] = useState({ firstName:'', lastName:'', username:'', email:'demo@fintrack.app', password:'Demo1234!' })
+  const [form, setForm] = useState({ firstName:'', lastName:'', username:'', email:'', password:'' })
   if (user) return <Navigate to="/" replace />
   const submit = async (e) => { e.preventDefault(); setBusy(true); setError(''); try { await (mode === 'login' ? login(form) : register(form)) } catch (err) { setError(errorMessage(err)) } finally { setBusy(false) } }
   return <main className="grid min-h-screen bg-white dark:bg-[#0d121c] lg:grid-cols-[1.08fr_.92fr]">
@@ -29,7 +29,6 @@ export default function AuthPage() {
         {error && <p className="rounded-xl bg-red-50 px-3 py-2.5 text-xs font-medium text-red-600 dark:bg-red-500/10 dark:text-red-400">{error}</p>}
         <button className="btn-primary mt-2 h-12 w-full" disabled={busy}>{busy?<LoaderCircle className="animate-spin" size={18}/>:<>{mode==='login'?'Sign in':'Create account'}<ArrowRight size={17}/></>}</button>
       </form>
-      {mode === 'login' && <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3 text-xs text-blue-700 dark:border-blue-500/15 dark:bg-blue-500/10 dark:text-blue-300"><strong>Demo access:</strong> demo@fintrack.app · Demo1234!</div>}
       <p className="mt-7 text-center text-sm text-slate-500">{mode==='login'?"New to Finance Tracker?":"Already have an account?"} <button className="font-semibold text-blue-600 hover:underline" onClick={()=>{setMode(mode==='login'?'register':'login');setError('')}}>{mode==='login'?'Create an account':'Sign in'}</button></p>
     </div></section>
   </main>
