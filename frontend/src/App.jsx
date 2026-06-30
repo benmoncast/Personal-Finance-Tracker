@@ -8,6 +8,7 @@ import { AccountsPage, BudgetsPage, ExpensesPage, GoalsPage, IncomePage, Subscri
 import ReportsPage from './pages/ReportsPage'
 import SettingsPage from './pages/SettingsPage'
 import AdminPage from './pages/AdminPage'
+import CategoriesPage from './pages/CategoriesPage'
 
 export default function App() {
   const { user, loading } = useAuth()
@@ -19,6 +20,7 @@ export default function App() {
         <Route index element={<DashboardPage />} />
         <Route path="income" element={<IncomePage />} />
         <Route path="expenses" element={<ExpensesPage />} />
+        <Route path="categories" element={<CategoriesPage />} />
         <Route path="budgets" element={<BudgetsPage />} />
         <Route path="accounts" element={<AccountsPage />} />
         <Route path="subscriptions" element={<SubscriptionsPage />} />

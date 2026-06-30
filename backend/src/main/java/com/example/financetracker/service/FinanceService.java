@@ -76,8 +76,14 @@ public class FinanceService {
     public Map<String, Object> saveCategory(String email, Long id, CategoryRequest r) {
         User user = user(email);
         Category item = id == null ? new Category() : ownedCategory(id, user.getId());
+        boolean duplicate = categories.findAvailable(user.getId()).stream()
+                .filter(category -> id == null || !Objects.equals(category.getId(), id))
+                .anyMatch(category -> category.getName().equalsIgnoreCase(r.name().trim())
+                        && category.getType().equalsIgnoreCase(r.type()));
+        if (duplicate)
+            throw new ApiException(HttpStatus.CONFLICT, "A category with that name and type already exists.");
         item.setUser(user);
-        item.setName(r.name());
+        item.setName(r.name().trim());
         item.setType(upper(r.type(), "EXPENSE"));
         item.setColor(text(r.color(), "#2F80ED"));
         item.setIcon(text(r.icon(), "circle"));
@@ -87,7 +93,16 @@ public class FinanceService {
 
     @Transactional
     public void deleteCategory(String email, Long id) {
-        categories.delete(ownedCategory(id, user(email).getId()));
+        Long userId = user(email).getId();
+        Category item = ownedCategory(id, userId);
+        boolean inUse = incomes.existsByUserIdAndCategoryId(userId, id)
+                || expenses.existsByUserIdAndCategoryId(userId, id)
+                || budgets.existsByUserIdAndCategoryId(userId, id)
+                || subscriptions.existsByUserIdAndCategoryId(userId, id);
+        if (inUse)
+            throw new ApiException(HttpStatus.CONFLICT,
+                    "This category is in use. Reassign its transactions, budgets, and subscriptions before deleting it.");
+        categories.delete(item);
     }
 
     public List<Map<String, Object>> incomes(String email) {

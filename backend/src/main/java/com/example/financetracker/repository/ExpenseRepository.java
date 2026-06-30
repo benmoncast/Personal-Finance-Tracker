@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.example.financetracker.entity.Expense;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
+    boolean existsByUserIdAndCategoryId(Long userId, Long categoryId);
+
     List<Expense> findByUserIdOrderByDateDescCreatedAtDesc(Long userId);
 
     Optional<Expense> findByIdAndUserId(Long id, Long userId);
