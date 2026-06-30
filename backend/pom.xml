@@ -65,7 +65,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.example.userprofile.UserProfileCrudAppApplication</mainClass>
+					<mainClass>com.example.financetracker.FinanceTrackerAppApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
