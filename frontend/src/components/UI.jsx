@@ -1,6 +1,6 @@
 import { AlertCircle, Check, LoaderCircle, Plus, X } from 'lucide-react'
 
-export function Card({ children, className = '' }) { return <section className={`surface rounded-2xl ${className}`}>{children}</section> }
+export function Card({ children, className = '', ...props }) { return <section className={`surface rounded-2xl ${className}`} {...props}>{children}</section> }
 
 export function Button({ children, variant = 'primary', className = '', ...props }) {
   return <button className={`${variant === 'primary' ? 'btn-primary' : 'btn-secondary'} ${className}`} {...props}>{children}</button>
